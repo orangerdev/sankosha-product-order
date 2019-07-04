@@ -60,6 +60,8 @@ function deactivate_snkpo() {
 register_activation_hook( __FILE__, 'activate_snkpo' );
 register_deactivation_hook( __FILE__, 'deactivate_snkpo' );
 
+require_once( 'vendor/autoload.php' );
+
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
