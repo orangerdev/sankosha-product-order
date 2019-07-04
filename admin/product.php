@@ -87,6 +87,37 @@ class Product {
      * @return  void
      */
     public function set_post_options() {
-
+        Container::make('post_meta',__('Product Data','snkpo'))
+            ->where('post_type',  '=', 'snkpo-product')
+            ->add_fields([
+                Field::make('text'  ,'stock_ok',            __('Stock OK'  ,'snkpo'))
+                    ->set_attribute('type','number')
+                    ->set_attribute('min',0)
+                    ->set_default_value(0)
+                    ->set_width(50),
+                Field::make('text'  ,'stock_unschedule',    __('Stock Unschedule'  ,'snkpo'))
+                    ->set_attribute('type','number')
+                    ->set_attribute('min',0)
+                    ->set_default_value(0)
+                    ->set_width(50),
+                Field::make('text'  ,'leadtime_fewer_then_ok',      __('Leadtime Day','snkpo'))
+                    ->set_attribute('type','number')
+                    ->set_attribute('min',0)
+                    ->set_default_value(7)
+                    ->set_width(33)
+                    ->set_help_text(__(' Stock OK >= Order ','snkpo')),
+                Field::make('text'  ,'leadtime_fewer_then_total',   __('Leadtime Day','snkpo'))
+                    ->set_attribute('type','number')
+                    ->set_attribute('min',0)
+                    ->set_default_value(14)
+                    ->set_width(33)
+                    ->set_help_text( __('Total Stock >= Order ','snkpo')),
+                Field::make('text'  ,'leadtime_more_then_total',    __('Leadtime Day','snkpo'))
+                    ->set_attribute('type','number')
+                    ->set_attribute('min',0)
+                    ->set_default_value(30)
+                    ->set_width(33)
+                    ->set_help_text(__('Total Stock <= Order','snkpo'))
+            ]);
     }
 }
