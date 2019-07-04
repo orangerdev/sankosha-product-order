@@ -120,4 +120,46 @@ class Product {
                     ->set_help_text(__('Total Stock <= Order','snkpo'))
             ]);
     }
+
+    /**
+     * Set custom column into product table
+     * Hooked via filter manage_snkpo-product_posts_columns, priority 999
+     * @param   array   columns
+     * @return  array
+     */
+    public function set_table_columns(array $columns) {
+
+        $columns['stock_ok']         = __('Stock OK','snkpo');
+        $columns['stock_unschedule'] = __('Stock Unschedule','snkpo');
+        $columns['leadtime']         = __('Leadtime Day','snkpo');
+
+		unset($columns['date']);
+
+        return $columns;
+    }
+
+    /**
+     * Display the product data
+     * Hooked via action manage_snkpo-product_posts_custom_column, priority 999
+     * @param  array  $column
+     * @param  int    $post_id
+     * @return void
+     */
+    public function display_data_in_table(string $column, int $post_id) {
+		switch($column) :
+			case 'stock_ok' :
+				echo carbon_get_post_meta($post_id, 'stock_ok');
+				break;
+			case 'stock_unschedule' :
+				echo carbon_get_post_meta($post_id, 'stock_unschedule');
+				break;
+			case 'leadtime' :
+				printf(__('%s / %s / %s','snkpo'),
+					carbon_get_post_meta($post_id,'leadtime_fewer_then_ok'),
+					carbon_get_post_meta($post_id,'leadtime_fewer_then_total'),
+					carbon_get_post_meta($post_id,'leadtime_more_then_total')
+				);
+				break;
+		endswitch;
+    }
 }

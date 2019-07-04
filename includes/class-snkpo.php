@@ -161,8 +161,10 @@ class Snkpo {
 
 		$product	= new SNKPO\Admin\Product( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'init',							$product, 'register_post_type'	,999);
-		$this->loader->add_action( 'carbon_fields_register_fields',	$product, 'set_post_options'	,999);
+		$this->loader->add_action( 'init',										$product, 'register_post_type'		,999);
+		$this->loader->add_action( 'carbon_fields_register_fields',				$product, 'set_post_options'		,999);
+		$this->loader->add_action( 'manage_snkpo-product_posts_custom_column',	$product, 'display_data_in_table'	,999, 2);
+		$this->loader->add_filter( 'manage_snkpo-product_posts_columns',		$product, 'set_table_columns'		,999);
 
 	}
 
