@@ -115,6 +115,7 @@ class Snkpo {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/product.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -154,8 +155,14 @@ class Snkpo {
 
 		$admin = new SNKPO\Admin( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', 	$admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', 	$admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'after_setup_theme',			$admin, 'load_carbon_fields'	,999);
+
+		$product	= new SNKPO\Admin\Product( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'init',							$product, 'register_post_type'	,999);
+		$this->loader->add_action( 'carbon_fields_register_fields',	$product, 'set_post_options'	,999);
 
 	}
 
