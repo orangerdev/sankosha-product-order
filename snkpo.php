@@ -83,4 +83,19 @@ function run_snkpo() {
 	$plugin->run();
 
 }
+
+if(!function_exists('__debug')) :
+    function __debug()
+    {
+        $bt     = debug_backtrace();
+        $caller = array_shift($bt);
+        ?><pre class='sejoli-debug'><?php
+        print_r([
+            "file"  => $caller["file"],
+            "line"  => $caller["line"],
+            "args"  => func_get_args()
+        ]);
+        ?></pre><?php
+    }
+endif;
 run_snkpo();

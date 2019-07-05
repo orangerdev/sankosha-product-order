@@ -2,3 +2,69 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+.sankosha-list-product {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+.sankosha-list-product .product {
+    flex: 0 0 30%;
+    box-shadow: 2px 2px 6px 0px  rgba(0,0,0,0.3);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.sankosha-list-product a {
+    display: block;
+}
+
+.sankosha-list-product figure {
+    margin: 0 0 .5rem 0;
+}
+
+.sankosha-list-product figure a {
+
+}
+
+.sankosha-list-product figure a img {
+    max-width: 100%;
+    width: 100%;
+}
+
+.sankosha-list-product h2 {
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.sankosha-list-product h2 a {
+
+}
+
+.sankosha-list-product a.button {
+    width: 80%;
+    display: inline-block;
+    background-color : #3d50a3;
+    color : white;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    padding: .4rem;
+    margin: 0 0 .5rem 0;
+    border-radius: 4px;
+}
+
+
+@media screen and (max-width:960px) {
+    .sankosha-list-product .product {
+        flex: 0 0 45%;
+    }
+}
+
+@media screen and (max-width:480px) {
+    .sankosha-list-product .product {
+        flex: 0 0 100%;
+    }
+}

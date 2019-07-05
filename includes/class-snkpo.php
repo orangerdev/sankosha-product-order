@@ -122,6 +122,7 @@ class Snkpo {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/product.php';
 
 		$this->loader = new Snkpo_Loader();
 
@@ -181,6 +182,8 @@ class Snkpo {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $public, 'enqueue_scripts' );
+
+		$product = new SNKPO\Front\Product( $this->get_plugin_name(), $this->get_version() );
 
 	}
 
