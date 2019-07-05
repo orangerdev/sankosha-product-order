@@ -186,6 +186,7 @@ class Snkpo {
 		$product = new SNKPO\Front\Product( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'template_redirect',	$product, 'check_if_user_logged_in', 999);
+		$this->loader->add_action( 'template_redirect',	$product, 'check_stock_product', 1999);
 		$this->loader->add_filter( 'the_content',		$product, 'display_form', 999);
 
 	}
