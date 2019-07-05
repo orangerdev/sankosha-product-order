@@ -91,6 +91,12 @@ class Order {
 
                 update_post_meta($post_id,'order_data',$data);
 
+				$data['order_id']	= $post_id;
+				$data['product_id']	= $product->ID;
+				$data['product']	= $product->post_title;
+
+				do_action('snkpo/send-email',$post_id,$data);
+
                 $message .= sprintf(__('<p>Order #%s created</p>','snkpo'),$post_id);
             endif;
         else :

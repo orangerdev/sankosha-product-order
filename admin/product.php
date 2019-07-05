@@ -70,7 +70,7 @@ class Product {
     		'show_ui'            => true,
     		'show_in_menu'       => true,
     		'query_var'          => true,
-    		'rewrite'            => array( 'slug' => 'product' ),
+    		'rewrite'            => array( 'slug' => 'snkpo-product' ),
     		'capability_type'    => 'post',
     		'has_archive'        => true,
     		'hierarchical'       => false,

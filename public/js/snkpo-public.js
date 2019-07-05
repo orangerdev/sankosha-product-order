@@ -46,6 +46,9 @@
 					console.log()
 					if(true == response.valid) {
 						sankosha.form.find('.message.success').show().html(response.message);
+						setTimeout(function(){
+							location.reload();
+						},1000);
 					} else {
 						sankosha.form.find('.message.error').show().html(response.message);
 					}

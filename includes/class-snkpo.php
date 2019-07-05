@@ -117,6 +117,7 @@ class Snkpo {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/product.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/order.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/email.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -177,6 +178,9 @@ class Snkpo {
 		$this->loader->add_action( 'manage_snkpo-order_posts_custom_column',	$order, 'display_data_in_table'	,999, 2);
 		$this->loader->add_filter( 'manage_snkpo-order_posts_columns',			$order, 'set_table_columns'		,999);
 
+		$email	= new SNKPO\Admin\Email( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'snkpo/send-email',							$email, 'send_email'			,999,2);
 	}
 
 	/**
