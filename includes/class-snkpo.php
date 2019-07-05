@@ -172,6 +172,7 @@ class Snkpo {
 		$order	= new SNKPO\Admin\Order( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'init',										$order, 'register_post_type'		,999);
+		$this->loader->add_action( 'add_meta_boxes',							$order, 'set_metabox'				,999);
 
 	}
 

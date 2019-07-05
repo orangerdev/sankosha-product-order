@@ -80,4 +80,21 @@ class Order {
 
     	register_post_type( 'snkpo-order', $args );
     }
+
+	/**
+	 * Add metabox to show order detail
+	 * Hooked via action add_meta_boxes, priority 999
+	 */
+	public function set_metabox() {
+		add_meta_box('snkpo-order-detail',__('Order Detail','snkpo'),[$this,'display_metabox'],'snkpo-order');
+	}
+
+	/**
+	 * Display metabox data
+	 * @return void
+	 */
+	public function display_metabox() {
+		global $post;
+		require 'partials/order-detail.php';
+	}
 }
