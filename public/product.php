@@ -61,12 +61,11 @@ class Product {
 	 */
 	public function check_if_user_logged_in() {
 
-		if(is_singular('snkpo-product') && !is_user_logged_in()) :
-			wp_redirect(home_url('product'));
-			exit;
+		if(is_singular('snkpo-product') && is_user_logged_in()) :
+			$this->is_able_to_access = true;
 		endif;
 
-		$this->is_able_to_access = true;
+
 	}
 
 	/**
@@ -77,14 +76,25 @@ class Product {
 	 */
 	public function display_form(string $content) {
 
-		if($this->is_able_to_access) :
+
+		if(is_singular('snkpo-product')) :
 			ob_start();
-
-	        require SNKPO_PATH . '/public/partials/order-form.php';
-
-	        $content = ob_get_contents();
-	        ob_end_clean();
+			if($this->is_able_to_access) :
+		        require SNKPO_PATH . '/public/partials/order-form.php';
+			else :
+				?>
+				<div class="sankosha">
+					<div class="message error">
+						<p>You need to login first to access this page</p>
+					</div>
+				</div>
+				<?php
+			endif;
+			$content .= ob_get_contents();
+			ob_end_clean();
 		endif;
+
+
 
 		return $content;
 	}
