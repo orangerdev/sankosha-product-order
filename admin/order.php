@@ -72,12 +72,10 @@ class Order {
     		'query_var'          => true,
     		'rewrite'            => array( 'slug' => 'order' ),
     		'capability_type'    => 'post',
-            'capabilities'       => [
-                'create_posts'   => 'do_not_allow'
-            ],
     		'has_archive'        => true,
     		'hierarchical'       => false,
-    		'menu_position'      => null
+    		'menu_position'      => null,
+			'supports'           => array( 'title', 'thumbnail' )
     	];
 
     	register_post_type( 'snkpo-order', $args );

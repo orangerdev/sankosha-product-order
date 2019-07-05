@@ -66,34 +66,37 @@ class Product {
 		endif;
 	}
 
+	/**
+	 * Check product stock
+	 * Hooked via action template_redirect, priority 1999
+	 * @return	void
+	 */
 	public function check_stock_product() {
-		if(isset($_GET['sankosha-action']) && 'check-stock' === $_GET['sankosha-action']) :
 
-			$product_id     = intval($_GET['product_id']);
-			$stock          = intval($_GET['total_order']);
-			$stock_ok       = intval(carbon_get_post_meta($product_id, 'stock_ok'));
-			$stock_uns      = intval(carbon_get_post_meta($product_id, 'stock_unschedule'));
-			$leadtime_f_ok  = carbon_get_post_meta($product_id,'leadtime_fewer_then_ok');
-			$leadtime_f_tot = carbon_get_post_meta($product_id,'leadtime_fewer_then_total');
-			$leadtime_m_tot = carbon_get_post_meta($product_id,'leadtime_more_then_total');
+		$product_id     = intval($_GET['product_id']);
+		$stock          = intval($_GET['total_order']);
+		$stock_ok       = intval(carbon_get_post_meta($product_id, 'stock_ok'));
+		$stock_uns      = intval(carbon_get_post_meta($product_id, 'stock_unschedule'));
+		$leadtime_f_ok  = carbon_get_post_meta($product_id,'leadtime_fewer_then_ok');
+		$leadtime_f_tot = carbon_get_post_meta($product_id,'leadtime_fewer_then_total');
+		$leadtime_m_tot = carbon_get_post_meta($product_id,'leadtime_more_then_total');
 
-			if($stock < $stock_ok) :
-				$message = '<p>'.sprintf(__('Leadtime %s days','sankosha'),$leadtime_f_ok).'</p>';
-			elseif($stock < ($stock_ok + $stock_uns)) :
-				$message = '<p>'.sprintf(__('Leadtime %s days','sankosha'),$leadtime_f_tot).'</p>';
-			else :
-				$message = '<p>'.sprintf(__('Leadtime %s days','sankosha'),$leadtime_m_tot).'</p>';
-			endif;
-
-			wp_send_json([
-				'stock'	=> [
-					'ok'	=> $stock_ok,
-					'uns'	=> $stock_uns
-				],
-				'message' => $message
-			]);
-			exit;
+		if($stock < $stock_ok) :
+			$message = '<p>'.sprintf(__('Leadtime %s days','sankosha'),$leadtime_f_ok).'</p>';
+		elseif($stock < ($stock_ok + $stock_uns)) :
+			$message = '<p>'.sprintf(__('Leadtime %s days','sankosha'),$leadtime_f_tot).'</p>';
+		else :
+			$message = '<p>'.sprintf(__('Leadtime %s days','sankosha'),$leadtime_m_tot).'</p>';
 		endif;
+
+		wp_send_json([
+			'stock'	=> [
+				'ok'	=> $stock_ok,
+				'uns'	=> $stock_uns
+			],
+			'message' => $message
+		]);
+		exit;
 	}
 
 	/**
@@ -121,8 +124,6 @@ class Product {
 			$content .= ob_get_contents();
 			ob_end_clean();
 		endif;
-
-
 
 		return $content;
 	}

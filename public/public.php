@@ -71,7 +71,7 @@ class Front {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		
+
 		global $post;
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/snkpo-public.js', array( 'jquery' ), $this->version, false );
@@ -80,15 +80,15 @@ class Front {
 				'product_id' => $post->ID,
 				'key'        => wp_create_nonce('sankosha-create-order'),
 				'url'        => add_query_arg([
-					'sankosha-action' => 'create-order'
-				],home_url())
+					'action' => 'create-order'
+				],admin_url('admin-ajax.php'))
 			],
 			'checkStock'	=> [
 				'product_id' => $post->ID,
 				'key'        => wp_create_nonce('sankosha-check-stock'),
 				'url'        => add_query_arg([
-					'sankosha-action' => 'check-stock'
-				],home_url())
+					'action' => 'check-stock'
+				],admin_url('admin-ajax.php'))
 			]
 		]);
 	}

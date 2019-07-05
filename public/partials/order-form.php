@@ -1,9 +1,12 @@
+<?php
+$user = wp_get_current_user();
+?>
 <form class="sankosha sankosha-order-form" action="" method="post">
     <h4>Product / Pump Request</h4>
     <div class="field required">
         <label for="name">
             <span>Name <sup>*</sup> </span>
-            <input type="text" name="name" value="" required />
+            <input type="text" name="name" value="<?php echo $user->display_name; ?>" required />
         </label>
     </div>
     <div class="field">
@@ -21,7 +24,7 @@
     <div class="field required">
         <label for="email">
             <span>Email <sup>*</sup> </span>
-            <input type="email" name="email" value="" required />
+            <input type="email" name="email" value="<?php echo $user->user_email; ?>" required />
         </label>
     </div>
     <div class="field">
@@ -59,6 +62,9 @@
     </div>
     <div class="message error">
         <p>Error</p>
+    </div>
+    <div class="message success">
+        <p>Success</p>
     </div>
     <button type="submit" name="button">Order</button>
 </form>

@@ -23,6 +23,12 @@
      background-color: #cceafc;
  }
 
+ .sankosha .message.success {
+     border-color : #27ae60;
+     color : #27ae60;
+     background-color: #bdf9d6;
+ }
+
 .sankosha-list-product {
     display: flex;
     flex-wrap: wrap;
@@ -122,6 +128,11 @@
 .sankosha-order-form .field label span{
     display: block;
     font-size: 1rem;
+}
+
+.sankosha-order-form .field label span sup {
+    bottom: 0;
+    color: red;
 }
 
 .sankosha-order-form .field input,
