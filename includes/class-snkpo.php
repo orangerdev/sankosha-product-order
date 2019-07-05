@@ -158,9 +158,10 @@ class Snkpo {
 
 		$admin = new SNKPO\Admin( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', 	$admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', 	$admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'after_setup_theme',			$admin, 'load_carbon_fields'	,999);
+		$this->loader->add_action( 'admin_enqueue_scripts', 					$admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', 					$admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'after_setup_theme',							$admin, 'load_carbon_fields'	,999);
+		$this->loader->add_action( 'carbon_fields_register_fields',				$admin, 'set_plugin_options'	,999);
 
 		$product	= new SNKPO\Admin\Product( $this->get_plugin_name(), $this->get_version() );
 

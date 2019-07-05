@@ -2,6 +2,9 @@
 
 namespace SNKPO;
 
+use Carbon_Fields\Container;
+use Carbon_Fields\Field;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -85,5 +88,31 @@ class Admin {
 	 */
 	public function load_carbon_fields() {
 		\Carbon_Fields\Carbon_Fields::boot();
+	}
+
+	/**
+	 * Display plugin options
+	 * Hooked via action carbon_fields_register_fields, priority 999
+	 * @return void
+	 */
+	public function set_plugin_options() {
+
+		ob_start();
+		require 'partials/shortcodes.php';
+		$content = ob_get_contents();
+		ob_end_clean();
+
+		Container::make('theme_options',__('Sankosha Options','snkpo'))
+			->add_tab(__('Email','snkpo'),[
+				Field::make('html',		'snkpo_html_info'		,__('Shortcode Info','snkpo'))
+					->set_html($content),
+				Field::make('text',		'snkpo_sender_name'		,__('Sender Name','snkpo')),
+				Field::make('text',		'snkpo_sender_email'	,__('Sender Email','snkpo')),
+				Field::make('text',		'snkpo_reply_email'		,__('Reply-to Email','snkpo')),
+				Field::make('text',		'snkpo_cc_emails'		,__('CC Email','snkpo'))
+					->set_help_text(__('use comma to separate multi email addresses','snkpo')),
+				Field::make('text',		'snkpo_email_title'		,__('Email Title','snkpo')),
+				Field::make('rich_text','snkpo_email_content'	,__('Email Content','snkpo'))
+			]);
 	}
 }
