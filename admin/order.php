@@ -82,6 +82,44 @@ class Order {
     }
 
 	/**
+     * Set custom column into order table
+     * Hooked via filter manage_snkpo-order_posts_columns, priority 999
+     * @param   array   columns
+     * @return  array
+     */
+    public function set_table_columns(array $columns) {
+		$columns = [
+			'cb'			=> '<input type="checkbox">',
+			'title'			=> __('Title','snkpo'),
+			'order_by'      => __('Order By','snkpo'),
+        	'total_order'	=> __('Total Order','snkpo'),
+			'date'			=> __('Date','snkpo')
+		];
+
+        return $columns;
+    }
+
+    /**
+     * Display the order data
+     * Hooked via action manage_snkpo-order_posts_custom_column, priority 999
+     * @param  array  $column
+     * @param  int    $post_id
+     * @return void
+     */
+    public function display_data_in_table(string $column, int $post_id) {
+		switch($column) :
+			case 'order_by' :
+				$order_data = get_post_meta($post_id,'order_data',true);
+				echo $order_data['name'].' ( '.$order_data['email'].' )';
+				break;
+			case 'total_order' :
+				$order_data = get_post_meta($post_id,'order_data',true);
+				echo $order_data['order'];
+				break;
+		endswitch;
+    }
+
+	/**
 	 * Add metabox to show order detail
 	 * Hooked via action add_meta_boxes, priority 999
 	 */

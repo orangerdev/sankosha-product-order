@@ -173,6 +173,8 @@ class Snkpo {
 
 		$this->loader->add_action( 'init',										$order, 'register_post_type'		,999);
 		$this->loader->add_action( 'add_meta_boxes',							$order, 'set_metabox'				,999);
+		$this->loader->add_action( 'manage_snkpo-order_posts_custom_column',	$order, 'display_data_in_table'	,999, 2);
+		$this->loader->add_filter( 'manage_snkpo-order_posts_columns',			$order, 'set_table_columns'		,999);
 
 	}
 
