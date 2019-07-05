@@ -34,7 +34,16 @@ class Product {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-        add_shortcode('sankosha-products'    ,[$this,'display_product_list']);
+
+	}
+
+	/**
+	 * Register custom shortcode
+	 * Hooked via action init, priority 999
+	 * @return void
+	 */
+	public function register_shortcode() {
+		add_shortcode('sankosha-products'    ,[$this,'display_product_list']);
 	}
 
     /**
