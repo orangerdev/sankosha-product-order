@@ -90,6 +90,7 @@ class Product {
         Container::make('post_meta',__('Product Data','snkpo'))
             ->where('post_type',  '=', 'snkpo-product')
             ->add_fields([
+				Field::make('text'  ,'price',           	__('Price'  ,'snkpo')),
                 Field::make('text'  ,'stock_ok',            __('Stock OK'  ,'snkpo'))
                     ->set_attribute('type','number')
                     ->set_attribute('min',0)
@@ -128,7 +129,7 @@ class Product {
      * @return  array
      */
     public function set_table_columns(array $columns) {
-
+		$columns['price']            = __('Price','snkpo');
         $columns['stock_ok']         = __('Stock OK','snkpo');
         $columns['stock_unschedule'] = __('Stock Unschedule','snkpo');
         $columns['leadtime']         = __('Leadtime Day','snkpo');
@@ -147,6 +148,9 @@ class Product {
      */
     public function display_data_in_table(string $column, int $post_id) {
 		switch($column) :
+			case 'price' :
+				echo carbon_get_post_meta($post_id, 'price');
+				break;
 			case 'stock_ok' :
 				echo carbon_get_post_meta($post_id, 'stock_ok');
 				break;
