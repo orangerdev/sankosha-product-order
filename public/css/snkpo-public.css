@@ -3,6 +3,26 @@
  * included in this file.
  */
 
+ .sankosha .message {
+     padding: 8px;
+     margin-bottom: 0.5rem;
+     border:1px solid #333;
+     background-color: #dedede;
+     color: black;
+ }
+
+ .sankosha .message.error {
+     border-color : #c0392b;
+     color : #c0392b;
+     background-color: #fcdedb;
+ }
+
+ .sankosha .message.info {
+     border-color : #2980b9;
+     color : #2980b9;
+     background-color: #cceafc;
+ }
+
 .sankosha-list-product {
     display: flex;
     flex-wrap: wrap;
@@ -72,4 +92,60 @@
     .sankosha-list-product .product {
         flex: 0 0 100%;
     }
+}
+
+.sankosha-order-form {
+    width:90%;
+    max-width: 720px;
+    margin: 1rem auto;
+    background-color: #dfe6e9;
+    border: 1px solid #636e72;
+    padding: 2rem;
+
+}
+
+.sankosha-order-form h4 {
+    border-bottom : 1px solid #636e72;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.sankosha-order-form .field {
+    margin-bottom: .8rem;
+}
+
+.sankosha-order-form .field label {
+    display: block;
+}
+
+.sankosha-order-form .field label span{
+    display: block;
+    font-size: 1rem;
+}
+
+.sankosha-order-form .field input,
+.sankosha-order-form .field textarea{
+    border : 1px solid #888;
+    width: 100%;
+    padding: 4px;
+    font-size: 14px;
+}
+
+.sankosha-order-form button {
+    width: 100%;
+    display: inline-block;
+    background-color : #3d50a3;
+    color : white;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    padding: .4rem;
+    margin: 0 0 .5rem 0;
+    border-radius: 4px;
+    font-size: 1.2rem;
+}
+
+.sankosha-order-form .message {
+    display: none;
 }

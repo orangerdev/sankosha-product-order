@@ -61,18 +61,6 @@ class Front {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Snkpo_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Snkpo_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/snkpo-public.css', array(), $this->version, 'all' );
 
 	}
@@ -83,21 +71,26 @@ class Front {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Snkpo_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Snkpo_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		
+		global $post;
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/snkpo-public.js', array( 'jquery' ), $this->version, false );
-
+		wp_localize_script($this->plugin_name, 'sankosha_var',[
+			'order'	=> [
+				'product_id' => $post->ID,
+				'key'        => wp_create_nonce('sankosha-create-order'),
+				'url'        => add_query_arg([
+					'sankosha-action' => 'create-order'
+				],home_url())
+			],
+			'checkStock'	=> [
+				'product_id' => $post->ID,
+				'key'        => wp_create_nonce('sankosha-check-stock'),
+				'url'        => add_query_arg([
+					'sankosha-action' => 'check-stock'
+				],home_url())
+			]
+		]);
 	}
 
 }
