@@ -66,6 +66,7 @@ class Admin {
 	 */
 	public function enqueue_styles() {
 
+		wp_enqueue_style('thickbox');
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/snkpo-admin.css', array(), $this->version, 'all' );
 
 	}
@@ -77,7 +78,13 @@ class Admin {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/snkpo-admin.js', array( 'jquery' ), $this->version, false );
+
+		wp_enqueue_script( $this->plugin_name.'-jsrender', 'https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.3/jsrender.min.js', array( 'jquery' ), '1.0.3', false );
+		wp_enqueue_script( $this->plugin_name.'-blockUI', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js', array( 'jquery' ), '2.70', false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/snkpo-admin.js', array( 'jquery', 'thickbox' ), $this->version, false );
+		wp_localize_script( $this->plugin_name, 'snkpo', [
+			'ajax_url' => site_url('/'),
+		]);
 
 	}
 
@@ -113,6 +120,11 @@ class Admin {
 					->set_help_text(__('use comma to separate multi email addresses','snkpo')),
 				Field::make('text',		'snkpo_email_title'		,__('Email Title','snkpo')),
 				Field::make('rich_text','snkpo_email_content'	,__('Email Content','snkpo'))
+			])
+			->add_tab(__('Product detail','snkpo'),[
+				Field::make('rich_text','snkpo_protect_order_message'	,__('Protect Order Message','snkpo'))
+					->set_default_value( sprintf( __('You need to login first to access this page, click <a href="%s">here</a> to login or click <a href="%s">here</a> to create an account','snkpo'), wp_login_url(), wp_registration_url() ) ),
+				Field::make('text',		'snkpo_order_success_redirect'	,__('Order Success Redirect Url','snkpo')),
 			]);
 	}
 }

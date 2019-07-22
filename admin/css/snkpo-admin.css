@@ -2,3 +2,42 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+.stock-form {
+    margin: 15px 0;
+}
+.stock-form .form-row {
+    margin-bottom: 10px;
+}
+.stock-form .form-row label {
+    display: block;
+}
+.stock-form .form-row input {
+    width: 100%;
+}
+.stock-form .form-row textarea {
+    width: 100%;    
+} 
+.alert {
+    color: #fff;
+    padding: 10px;
+    margin: 15px 0;
+}
+.alert.alert-success {
+    background: green;
+}
+.alert.alert-error {
+    background: red;
+}
+.alert h2 {
+    text-transform: uppercase;
+    margin: 0;
+    color: #fff;
+}
+.alert ul {
+    padding: 0;
+    margin: 0;
+}
+.blockUI {
+    z-index: 999999 !important;
+}

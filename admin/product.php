@@ -75,7 +75,7 @@ class Product {
     		'has_archive'        => true,
     		'hierarchical'       => false,
     		'menu_position'      => null,
-    		'supports'           => array( 'title', 'thumbnail' )
+    		'supports'           => array( 'title', 'editor', 'thumbnail' )
     	];
 
     	register_post_type( 'snkpo-product', $args );
@@ -91,16 +91,9 @@ class Product {
             ->where('post_type',  '=', 'snkpo-product')
             ->add_fields([
 				Field::make('text'  ,'price',           	__('Price'  ,'snkpo')),
-                Field::make('text'  ,'stock_ok',            __('Stock OK'  ,'snkpo'))
-                    ->set_attribute('type','number')
-                    ->set_attribute('min',0)
-                    ->set_default_value(0)
-                    ->set_width(50),
-                Field::make('text'  ,'stock_unschedule',    __('Stock Unschedule'  ,'snkpo'))
-                    ->set_attribute('type','number')
-                    ->set_attribute('min',0)
-                    ->set_default_value(0)
-                    ->set_width(50),
+				Field::make('textarea'  ,'location',           	__('Location'  ,'snkpo')),
+				Field::make( 'media_gallery', 'gallery', __( 'Gallery','snkpo' ) )
+					->set_type( array( 'image' ) ),
                 Field::make('text'  ,'leadtime_fewer_then_ok',      __('Leadtime Day','snkpo'))
                     ->set_attribute('type','number')
                     ->set_attribute('min',0)
@@ -132,7 +125,8 @@ class Product {
 		$columns['price']            = __('Price','snkpo');
         $columns['stock_ok']         = __('Stock OK','snkpo');
         $columns['stock_unschedule'] = __('Stock Unschedule','snkpo');
-        $columns['leadtime']         = __('Leadtime Day','snkpo');
+		$columns['leadtime']         = __('Leadtime Day','snkpo');
+		$columns['manage_stock']     = __('Manage Stock','snkpo');
 
 		unset($columns['date']);
 
@@ -147,15 +141,18 @@ class Product {
      * @return void
      */
     public function display_data_in_table(string $column, int $post_id) {
+		
+		$stock = snkpo_get_stock( $post_id );
+
 		switch($column) :
 			case 'price' :
-				echo carbon_get_post_meta($post_id, 'price');
+				echo snkpo_money_format( carbon_get_post_meta($post_id, 'price') );
 				break;
 			case 'stock_ok' :
-				echo carbon_get_post_meta($post_id, 'stock_ok');
+				echo $stock['ok'];
 				break;
 			case 'stock_unschedule' :
-				echo carbon_get_post_meta($post_id, 'stock_unschedule');
+				echo $stock['uns'];
 				break;
 			case 'leadtime' :
 				printf(__('%s / %s / %s','snkpo'),
@@ -164,6 +161,93 @@ class Product {
 					carbon_get_post_meta($post_id,'leadtime_more_then_total')
 				);
 				break;
+			case 'manage_stock' :
+				include 'partials/manage-stock.php';
+				break;
 		endswitch;
-    }
+	}
+	
+	public function display_manage_stock_popup() {
+
+		include 'partials/manage-stock-popup.php';
+		
+	}
+
+	public function ajax_add_stock() {
+
+		if ( isset( $_POST['add_stock_submit'] ) && wp_verify_nonce( $_POST['add_stock_submit'] , 'add-stock-nonce' ) ) :
+
+			$request = wp_parse_args( $_POST, [
+				'stock_ok' => 0,
+				'stock_unschedule' => 0,
+				'comment' => 'Manual Add',
+				'product_id' => 0,
+			] );
+
+			$errors = [];
+
+			if ( empty( $request['product_id'] ) ) :
+				$errors[] = __('Product id required','snkpo');
+			endif;
+
+			if ( $errors ) :
+				wp_send_json_error( $errors );
+			endif;
+
+			$data = [
+				'stock_ok' => $request['stock_ok'],
+				'stock_unschedule' => $request['stock_unschedule'],
+				'comment' => $request['comment']
+			];
+
+			add_post_meta( $request['product_id'], 'stock', $data );
+
+			wp_send_json_success([__('Add stock success','snkpo')]);
+
+		endif;
+
+	}
+
+	public function ajax_reduce_stock() {
+
+		if ( isset( $_POST['reduce_stock_submit'] ) && wp_verify_nonce( $_POST['reduce_stock_submit'] , 'reduce-stock-nonce' ) ) :
+
+			$request = wp_parse_args( $_POST, [
+				'stock_ok' => 0,
+				'stock_unschedule' => 0,
+				'comment' => 'Manual Add',
+				'product_id' => 0,
+			] );
+
+			$errors = [];
+
+			if ( empty( $request['product_id'] ) ) :
+				$errors[] = __('Product id required','snkpo');
+			endif;
+
+			if ( $errors ) :
+				wp_send_json_error( $errors );
+			endif;
+
+			if ( $request['stock_ok'] > 0 ) :
+				$request['stock_ok'] = -$request['stock_ok'];
+			endif;
+
+			if ( $request['stock_unschedule'] > 0 ) :
+				$request['stock_unschedule'] = -$request['stock_unschedule'];
+			endif;
+
+			$data = [
+				'stock_ok' => $request['stock_ok'],
+				'stock_unschedule' => $request['stock_unschedule'],
+				'comment' => $request['comment']
+			];
+
+			add_post_meta( $request['product_id'], 'stock', $data );
+
+			wp_send_json_success([__('Reduce stock success','snkpo')]);
+
+		endif;
+
+	}
 }

@@ -61,6 +61,10 @@ class Front {
 	 */
 	public function enqueue_styles() {
 
+		wp_enqueue_style( 'dashicons' );
+		wp_enqueue_style('thickbox');
+		wp_enqueue_style( $this->plugin_name.'-owl.carousel', 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css', array(), '2.3.4', 'all' );
+		wp_enqueue_style( $this->plugin_name.'-owl.theme.default', 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css', array(), '2.3.4', 'all' );
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/snkpo-public.css', array(), $this->version, 'all' );
 
 	}
@@ -74,7 +78,8 @@ class Front {
 
 		global $post;
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/snkpo-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name.'-owl.carousel', 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js', array( 'jquery' ), '2.3.4', false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/snkpo-public.js', array( 'jquery', 'thickbox' ), $this->version, false );
 		wp_localize_script($this->plugin_name, 'sankosha_var',[
 			'order'	=> [
 				'product_id' => $post->ID,

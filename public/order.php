@@ -50,6 +50,7 @@ class Order {
         ]);
 
         $valid = true;
+        $redirect = carbon_get_theme_option( 'snkpo_order_success_redirect' );
 
         if(wp_verify_nonce($args['key'],'sankosha-create-order')) :
 
@@ -91,6 +92,39 @@ class Order {
 
                 update_post_meta($post_id,'order_data',$data);
 
+                $stock = snkpo_get_stock( $product->ID );
+
+                $stock_ok = 0;
+                $stock_unschedule = 0;
+                $sisa = 0;
+                $comment = 'Order #'.$post_id;
+
+                if( $data['order'] <= $stock['ok'] ) :
+
+                    $stock_ok = $data['order'];
+
+                elseif( $data['order'] <= ( $stock['ok'] + $stock['uns'] ) ) :
+
+                    $stock_ok = $stock['ok'];
+                    $stock_unschedule = $stock['uns'] - ( $data['order'] - $stock['ok'] );
+
+                else :
+
+                    $stock_ok = $stock['ok'];
+                    $stock_unschedule = $stock['uns'];
+                    $sisa = $data['order'] - ( $stock['uns'] + $stock['ok'] );
+
+                endif;
+
+                $_data = [
+                    'stock_ok' => -$stock_ok,
+                    'stock_unschedule' => -$stock_unschedule,
+                    'sisa' => -$sisa,
+                    'comment' => $comment
+                ];
+    
+                add_post_meta( $product->ID, 'stock', $_data );
+
 				$data['order_id']	= $post_id;
 				$data['product_id']	= $product->ID;
 				$data['product']	= $product->post_title;
@@ -106,6 +140,7 @@ class Order {
 
         wp_send_json([
             'valid'   => $valid,
+            'redirect'=> $redirect,
             'message' => $message
         ]);
         exit;

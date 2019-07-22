@@ -46,9 +46,11 @@
 					console.log()
 					if(true == response.valid) {
 						sankosha.form.find('.message.success').show().html(response.message);
-						setTimeout(function(){
-							location.reload();
-						},1000);
+						if ( response.redirect ) {
+							setTimeout(function(){
+								window.location.href = response.redirect;
+							},1000);
+						}
 					} else {
 						sankosha.form.find('.message.error').show().html(response.message);
 					}
@@ -76,4 +78,32 @@
 			sankosha.checkStock();
 		},delay);
 	});
+
+	$(document).ready(function(){
+
+		$('.owl-carousel').owlCarousel({
+			loop:false,
+			margin:0,
+			nav:false,
+			responsive:{
+				0:{
+					items:1
+				},
+				600:{
+					items:3
+				},
+				1000:{
+					items:5
+				}
+			}
+		});
+
+		$(document).on('click','.order-product-modal-btn',function(e){
+			e.preventDefault();
+
+			tb_show('Order','#TB_inline?&width=600&height=550&inlineId=sankosha-order-form');
+		});
+
+	});
+
 })( jQuery );

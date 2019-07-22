@@ -87,15 +87,25 @@ function run_snkpo() {
 if(!function_exists('__debug')) :
     function __debug()
     {
-        $bt     = debug_backtrace();
-        $caller = array_shift($bt);
-        ?><pre class='sejoli-debug'><?php
-        print_r([
-            "file"  => $caller["file"],
-            "line"  => $caller["line"],
-            "args"  => func_get_args()
-        ]);
-        ?></pre><?php
+		if(
+			isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) &&
+			!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+			strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') :
+
+			$bt     = debug_backtrace();
+			$caller = array_shift($bt); ?>
+			<pre class='debug'><?php
+			print_r([
+				"file"  => $caller["file"],
+				"line"  => $caller["line"],
+				"args"  => func_get_args()
+			]); ?>
+			</pre>
+			<?php	
+
+		else:
+			do_action('qm/debug', func_get_args());
+		endif;
     }
 endif;
 run_snkpo();

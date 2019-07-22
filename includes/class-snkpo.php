@@ -111,6 +111,10 @@ class Snkpo {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-snkpo-i18n.php';
 
+		// functions
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/functions/money.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/functions/product.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -170,6 +174,9 @@ class Snkpo {
 		$this->loader->add_action( 'carbon_fields_register_fields',				$product, 'set_post_options'		,999);
 		$this->loader->add_action( 'manage_snkpo-product_posts_custom_column',	$product, 'display_data_in_table'	,999, 2);
 		$this->loader->add_filter( 'manage_snkpo-product_posts_columns',		$product, 'set_table_columns'		,999);
+		$this->loader->add_action( 'admin_footer',								$product, 'display_manage_stock_popup',999);
+		$this->loader->add_action( 'parse_request',								$product, 'ajax_add_stock',999);
+		$this->loader->add_action( 'parse_request',								$product, 'ajax_reduce_stock',999);		
 
 		$order	= new SNKPO\Admin\Order( $this->get_plugin_name(), $this->get_version() );
 
@@ -203,6 +210,8 @@ class Snkpo {
 		$this->loader->add_action( 'template_redirect',		$product, 'check_if_user_logged_in', 999);
 		$this->loader->add_action( 'wp_ajax_check-stock',	$product, 'check_stock_product', 	1999);
 		$this->loader->add_filter( 'the_content',			$product, 'display_form', 999);
+		$this->loader->add_filter( 'single_template',	    $product, 'single_template', 999);
+		$this->loader->add_action( 'wp_footer',	    		$product, 'order_via_link', 999);
 
 		$order = new SNKPO\Front\Order( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'wp_ajax_create-order',	$order, 'crete_order', 1999);
